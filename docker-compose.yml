@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16
+    container_name: loancore-db
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      POSTGRES_USER: loancore
+      POSTGRES_DB: loancore
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U loancore"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:
